@@ -1,0 +1,21 @@
+{
+    "exclude": [
+        "dist",
+        "node_modules"
+    ],
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "strict": true,
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "inlineSources": true
+    },
+    "include": [
+        "src/*",
+        "view/*"
+    ]
+}
