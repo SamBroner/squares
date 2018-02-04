@@ -2,8 +2,68 @@
     <head>
         <title>Sample "Hello, World" Application</title>
         <script src="./bundle.js"></script>
+        <style>
+        	table, th, td {border: 1px solid black;}
+        </style>
     </head>
     <body onload="instantiate()">
-        <a>Hello Ted!</a>
+        <a>Welcome to Friendship Fortress Super Bowl LII betting quares!</a><br>
+        <a>Please use the same name very time you place a bet!</a>
+        <br>
+
     </body>
+	<table style="width:100%">
+            <script language="javascript" type="text/javascript">
+
+        		function squarePurchase(cell) {
+	        		var formId = "form" + cell.id;
+					var cellId = cell.id;
+				    var name = document.getElementById(formId).value;
+				    var child = document.getElementById(formId);
+				    child.parentNode.removeChild(child);
+				    document.getElementById(cellId).innerHTML = name;
+				}
+
+            	document.write("<th></th>");
+
+                for (var colNo = 0; colNo < 10; colNo++) {
+                	document.write("<th>"+colNo+"</th>");
+                }
+
+                for (var rowNo = 0; rowNo < 10; rowNo++) {
+                	document.write("<tr>");
+                	for (var colNo = 0; colNo < 11; colNo++) {
+                		if (colNo == 0) {
+                			document.write("<td style='bold' >"+rowNo+"</td>");
+                		}
+                		else {
+                			var cellId = rowNo.toString() + (colNo-1).toString();
+                			var buttonId = "button" + cellId;
+                			var checkboxId = "checkbox" + cellId;
+                			var formId = "form" + cellId;
+                			var nameId = "input" + cellId;
+                			var functionCall = "squarePurchase("+cellId+")";
+                			document.write("<td id="+cellId+">");
+
+                			document.write("<form id="+formId+">");
+	  						document.write("Name:<br>");
+	  						document.write("<input type='text' id="+nameId+" value=''><br>");
+	  						document.write("<br>");
+	  						document.write("<input type='button' value='Purchase' onclick="+functionCall+">");
+							document.write("</form>");
+    						document.write("</td>");
+                		}
+                	}
+                	document.write("</tr>");
+                }
+
+                 //-->
+            </script>
+        </table>
+        
+        <script type="text/javascript">
+        	function doNothing(button) {
+        		document.getElementById(button.id).value = "clicked";
+        	}
+        </script>
 </html>
