@@ -1,5 +1,4 @@
 
-
 export module Table {
 
     export interface IGrid {
@@ -10,7 +9,8 @@ export module Table {
         name: string,
         purchased: boolean,
         home: number,
-        away: number
+        away: number,
+        c: Coordinate
     
         setHome(score: number): void;
     
@@ -22,18 +22,25 @@ export module Table {
     export class Grid implements IGrid {
         cells: ICell[][];
     
-        constructor() {
-            this.cells = [];
-            for(let i = 0; i < 10; i++){
-                this.cells[i] = [];
-                for(let j = 0; j < 10; j++) {
-                    this.cells[i][j] = new Cell(i, j);
+        constructor(cells?: ICell[][]) {
+            if (cells) {
+                console.log("cells were there");
+                this.cells = cells;
+            } else {
+                console.log("aw man");
+                this.cells = [];
+                for(let i = 0; i < 10; i++){
+                    this.cells[i] = [];
+                    for(let j = 0; j < 10; j++) {
+                        let c = new Coordinate(i, j);
+                        this.cells[i][j] = new Cell(c);
+                    }
                 }
             }
         }
     
-        generateNumbers(): void {
-
+        public generateNumbers(): void {
+            console.log("generateNumbers");
             let home = this.shuffle();
             let away = this.shuffle();
 
@@ -47,8 +54,8 @@ export module Table {
             return;
         }
 
-        shuffle(): number[] {
-
+        private shuffle(): number[] {
+            console.log("shuffle");
             let numbers: number[] = [];
             for (var a = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], i = a.length; i--; ) {
                 var random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
@@ -57,8 +64,9 @@ export module Table {
             return numbers;
         }
     
-        prettyPrintGrid(): void {
-            console.log()
+        public prettyPrintGrid(): void {
+            console.log("prettyPrintGrid");
+
             let row: string = "   ";
             for(let i = 0; i < 10; i++){
                 row += "( " + this.cells[0][i].home + " ) ";
@@ -74,14 +82,27 @@ export module Table {
             }
         }
     
-        addNames(names: string[], cs: Coordinate[]) {
-            for (let x = 0; x < cs.length; x++) {
-                this.addName(names[x], cs[x]);
+        public buyCells(cells: Cell[]) {
+            console.log("buyCells");
+            for (let i = 0; i < cells.length; i++) {
+                if (this.getCellByCell(cells[i]).purchased) {
+                    // Cell was already purchased!
+                    console.error("Ahh! Overlap");
+                }
+            }
+
+            for (let i = 0; i < cells.length; i++) {
+                this.getCellByCell(cells[i]).purchased = true;
+                this.getCellByCell(cells[i]).name = cells[i].name;
             }
         }
 
-        addName(name: string, c: Coordinate) {
+        private getCellByCell(cell: ICell) {
+            return this.getCell(cell.c);
+        }
 
+        private getCell(c: Coordinate): Cell {
+            return this.cells[c.x][c.y];
         }
     }
     
@@ -90,12 +111,14 @@ export module Table {
         purchased: boolean;
         home: number;
         away: number;
-    
-        constructor(private c: Coordinate) {
+        c: Coordinate;
+
+        constructor(c: Coordinate) {
             this.purchased = false;
             this.home = -1;
             this.away = -1;
             this.name = "";
+            this.c = c;
         }
     
         setHome(score: number): void {
@@ -115,5 +138,10 @@ export module Table {
     export class Coordinate {
         x: number;
         y: number;
+
+        constructor(x: number, y: number) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
